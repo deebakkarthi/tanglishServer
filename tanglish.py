@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
+from ai4bharat.transliteration.transformer.base_engine import lang_code
 from flask import Flask, json, jsonify, request
 from nltk import corpus, word_tokenize, sent_tokenize
 from nltk.lm.preprocessing import padded_everygram_pipeline
+from ai4bharat.transliteration import XlitEngine
 import re
 import string
 
 app = Flask(__name__)
+transliteration_model = XlitEngine("ta", beam_width=20, rescore=True)
 
 
 def conv_uchar_to_space(str_):
@@ -33,6 +36,10 @@ def ngram(str_, n):
     return padded_everygram_pipeline(n, str_)
 
 
+def transliterate(str_):
+    return transliteration_model.translit_sentence(str_, lang_code="ta")
+
+
 @app.route("/preprocess/", methods=["POST"])
 def handle_preprocess():
     corpus = request.get_json()
@@ -51,3 +58,9 @@ def handle_ngram():
     ret["train"] = [list(x) for x in train]
     ret["vocab"] = [x for x in vocab]
     return jsonify(ret)
+
+
+@app.route("/transliterate/", methods=["POST"])
+def handle_transliterate():
+    corpus = request.get_json()["text"]
+    return jsonify(transliterate(corpus))
