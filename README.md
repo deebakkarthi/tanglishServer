@@ -4,6 +4,8 @@ Backend of Tanglish
 Use python3.9
 
 The following dir structure is needed
+
+[Download](https://amritavishwavidyapeetham-my.sharepoint.com/:f:/g/personal/cb_en_u4cse20613_cb_students_amrita_edu/EvCeunl6TFhFiKBr_wFgj5wBH8AFGKvPmX07SuKMvPJArQ?e=o4B4Sc)
 ```
 models
 ├── best_model.pth
